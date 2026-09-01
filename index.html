@@ -1,22 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
   <title>IntraTech ASRS · Indústria 4.0</title>
-  <!-- Tailwind via CDN + uma pitada de customização -->
+  <!-- Tailwind via CDN + customização -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Ícones Font Awesome (opcional, mas enriquece) -->
+  <!-- Ícones -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* pequenos ajustes de sombra, transições e cores industriais */
+    /* ajustes industriais e animações */
     body {
-      background-color: #f8fafc; /* tom neutro industrial */
+      background-color: #f8fafc;
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
     .shadow-card {
-      box-shadow: 0 10px 25px -5px rgba(0, 20, 30, 0.15), 0 8px 10px -6px rgba(0, 20, 30, 0.05);
+      box-shadow: 0 10px 25px -5px rgba(0, 20, 30, 0.12), 0 8px 10px -6px rgba(0, 20, 30, 0.05);
     }
     .shadow-hero {
       box-shadow: 0 20px 40px -12px rgba(2, 20, 40, 0.35);
@@ -63,24 +62,55 @@
       box-shadow: 0 0 0 3px rgba(43, 156, 140, 0.2);
       outline: none;
     }
-    /* para o gradiente do hero */
-    .hero-gradient {
-      background: linear-gradient(135deg, #0b2a3b 0%, #123b4f 100%);
+    /* Hero com fundo ilustrado (robôs e armazém) */
+    .hero-illustrated {
+      background: linear-gradient(145deg, #0b2a3b 0%, #123b4f 100%);
+      position: relative;
+      overflow: hidden;
     }
+    .hero-illustrated::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        /* silhuetas de rack / armazém */
+        radial-gradient(circle at 5% 85%, rgba(43, 156, 140, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 95% 80%, rgba(43, 156, 140, 0.06) 0%, transparent 30%),
+        /* pequenos robôs (ícones) */
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.15"><rect x="20" y="120" width="40" height="40" rx="4" fill="%232b9c8c"/><rect x="70" y="100" width="30" height="60" rx="4" fill="%232b9c8c"/><rect x="120" y="130" width="25" height="30" rx="4" fill="%232b9c8c"/><circle cx="35" cy="105" r="12" fill="%23d97a3e"/><circle cx="85" cy="85" r="10" fill="%23d97a3e"/><circle cx="132" cy="115" r="8" fill="%23d97a3e"/><rect x="15" y="60" width="10" height="30" rx="2" fill="%232b9c8c"/><rect x="175" y="70" width="10" height="40" rx="2" fill="%232b9c8c"/></svg>');
+      background-repeat: repeat;
+      background-size: 180px 180px, 180px 180px, 220px 220px;
+      background-position: 0% 0%, 100% 100%, 10% 20%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    /* badge 4.0 */
     .badge-4-0 {
       background: rgba(43, 156, 140, 0.15);
       backdrop-filter: blur(2px);
       border: 1px solid rgba(43, 156, 140, 0.3);
     }
+    /* cards de benefícios destacados */
+    .benefit-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .benefit-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.15);
+    }
   </style>
 </head>
 <body>
 
-  <!-- ========== HEADER + HERO ========== -->
-  <header class="hero-gradient text-white relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-6 pt-6 pb-16 md:pb-20 lg:pb-24">
-      <!-- nav simples -->
-      <nav class="flex flex-wrap items-center justify-between gap-4 mb-10 md:mb-16">
+  <!-- ========== HEADER + HERO (com fundo ilustrado) ========== -->
+  <header class="hero-illustrated text-white">
+    <div class="max-w-7xl mx-auto px-6 pt-6 pb-12 md:pb-16 lg:pb-20 hero-content">
+      <!-- nav -->
+      <nav class="flex flex-wrap items-center justify-between gap-4 mb-8 md:mb-12">
         <div class="flex items-center gap-2">
           <span class="text-2xl font-bold tracking-tight"><i class="fas fa-robot text-industrial-teal mr-2"></i>IntraTech ASRS</span>
         </div>
@@ -93,19 +123,45 @@
         </div>
       </nav>
 
-      <!-- hero grid -->
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div class="space-y-6">
+      <!-- hero grid com benefícios em destaque logo abaixo do título -->
+      <div class="grid lg:grid-cols-5 gap-8 items-center">
+        <div class="lg:col-span-3 space-y-5">
           <span class="inline-block badge-4-0 text-industrial-teal px-4 py-1 rounded-full text-sm font-semibold tracking-wide">
             <i class="fas fa-cogs mr-2"></i> Intralogística 4.0
           </span>
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             O futuro do <span class="text-industrial-teal">armazém</span> começa aqui.
           </h1>
-          <p class="text-lg md:text-xl text-gray-200 max-w-lg leading-relaxed">
+          <p class="text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
             Soluções mecatrônicas e AGVs que eliminam gargalos, aumentam a segurança e aceleram sua operação logística.
           </p>
-          <div class="flex flex-wrap gap-4 pt-4">
+          
+          <!-- Benefícios principais em destaque (logo de cara) -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+            <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2">
+              <i class="fas fa-bolt text-industrial-teal text-xl"></i>
+              <span class="text-sm font-semibold text-white">+45% velocidade</span>
+            </div>
+            <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2">
+              <i class="fas fa-check-double text-industrial-teal text-xl"></i>
+              <span class="text-sm font-semibold text-white">-60% erros</span>
+            </div>
+            <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2">
+              <i class="fas fa-shield-alt text-industrial-orange text-xl"></i>
+              <span class="text-sm font-semibold text-white">Segurança 4.0</span>
+            </div>
+            <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2 col-span-2 sm:col-span-1">
+              <i class="fas fa-robot text-industrial-teal text-xl"></i>
+              <span class="text-sm font-semibold text-white">AGVs autônomos</span>
+            </div>
+            <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2 col-span-2 sm:col-span-1">
+              <i class="fas fa-chart-line text-industrial-orange text-xl"></i>
+              <span class="text-sm font-semibold text-white">+30% eficiência</span>
+            </div>
+          </div>
+          <p class="text-xs text-gray-300 flex items-center gap-1"><i class="fas fa-plus-circle text-industrial-teal"></i> E muito mais: CLP, visão computacional, projetos CAD 3D...</p>
+
+          <div class="flex flex-wrap gap-4 pt-2">
             <a href="#contato" class="btn-cta bg-industrial-orange hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-2xl flex items-center gap-3">
               <i class="fas fa-rocket"></i> Solicite um Orçamento de Automação
             </a>
@@ -114,11 +170,11 @@
             </a>
           </div>
         </div>
-        <div class="hidden md:flex justify-center">
+        <div class="lg:col-span-2 hidden lg:flex justify-center">
           <div class="relative w-full max-w-sm">
             <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-hero">
               <i class="fas fa-warehouse text-7xl text-industrial-teal/70 mb-4"></i>
-              <div class="flex items-center gap-4 text-sm">
+              <div class="flex flex-wrap items-center gap-3 text-sm">
                 <span class="bg-industrial-orange/20 px-3 py-1 rounded-full text-white">ASRS</span>
                 <span class="bg-industrial-teal/20 px-3 py-1 rounded-full text-white">AGV</span>
                 <span class="bg-white/10 px-3 py-1 rounded-full text-white">CLP</span>
@@ -130,14 +186,14 @@
       </div>
     </div>
     <!-- onda decorativa -->
-    <div class="absolute bottom-0 left-0 right-0 h-6 bg-[#f8fafc] rounded-t-[40px]"></div>
+    <div class="relative z-10 h-6 bg-[#f8fafc] rounded-t-[40px]"></div>
   </header>
 
-  <!-- ========== QUEM SOMOS ========== -->
+  <!-- ========== QUEM SOMOS (com foto da empresa fictícia no Brasil) ========== -->
   <section class="py-16 md:py-20 bg-white border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid md:grid-cols-5 gap-12 items-center">
-        <div class="md:col-span-2">
+        <div class="md:col-span-3">
           <span class="inline-block text-industrial-teal font-semibold text-sm tracking-widest"><i class="fas fa-flag mr-2"></i> QUEM SOMOS</span>
           <h2 class="text-3xl md:text-4xl font-bold text-[#0b2a3b] mt-2 mb-4">Engenharia que transforma o chão de fábrica</h2>
           <p class="text-gray-600 text-lg leading-relaxed">
@@ -149,27 +205,29 @@
             <div><i class="fas fa-users text-industrial-teal text-2xl"></i> <span class="text-gray-700 font-medium block">Time +10 anos de mercado</span></div>
             <div><i class="fas fa-microchip text-industrial-teal text-2xl"></i> <span class="text-gray-700 font-medium block">Soluções embarcadas</span></div>
           </div>
+          <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+            <i class="fas fa-map-pin text-industrial-orange"></i> 
+            <span>Matriz: São José dos Campos - SP, Brasil</span>
+          </div>
         </div>
-        <div class="md:col-span-3 grid grid-cols-2 gap-4">
-          <div class="bg-[#eef4f8] p-5 rounded-xl shadow-card">
-            <i class="fas fa-drafting-compass text-3xl text-[#0b4b5c]"></i>
-            <h4 class="font-bold text-[#0b2a3b] mt-2">Projetos CAD 3D</h4>
-            <p class="text-sm text-gray-600">Simulação e engenharia mecânica de precisão.</p>
-          </div>
-          <div class="bg-[#eef4f8] p-5 rounded-xl shadow-card">
-            <i class="fas fa-code text-3xl text-[#0b4b5c]"></i>
-            <h4 class="font-bold text-[#0b2a3b] mt-2">Sistemas Embarcados</h4>
-            <p class="text-sm text-gray-600">Eletrônica dedicada e placas customizadas.</p>
-          </div>
-          <div class="bg-[#eef4f8] p-5 rounded-xl shadow-card">
-            <i class="fas fa-cogs text-3xl text-[#0b4b5c]"></i>
-            <h4 class="font-bold text-[#0b2a3b] mt-2">Programação CLP</h4>
-            <p class="text-sm text-gray-600">Automação de máquinas e linhas produtivas.</p>
-          </div>
-          <div class="bg-[#eef4f8] p-5 rounded-xl shadow-card">
-            <i class="fas fa-eye text-3xl text-[#0b4b5c]"></i>
-            <h4 class="font-bold text-[#0b2a3b] mt-2">Visão Computacional</h4>
-            <p class="text-sm text-gray-600">Orientação para AGVs e rastreio inteligente.</p>
+        <!-- Foto da empresa fictícia -->
+        <div class="md:col-span-2 flex justify-center">
+          <div class="relative w-full max-w-xs rounded-2xl overflow-hidden shadow-card border-2 border-industrial-teal/20">
+            <!-- Imagem ilustrativa (prédio industrial + Brasil) -->
+            <div class="bg-[#eef4f8] p-4 flex flex-col items-center">
+              <div class="w-full h-44 bg-gradient-to-br from-[#0b2a3b] to-[#1f4b5e] rounded-xl flex items-center justify-center relative">
+                <i class="fas fa-building text-6xl text-white/30"></i>
+                <i class="fas fa-flag text-4xl text-[#d97a3e] absolute bottom-3 right-3"></i>
+                <div class="absolute top-3 left-3 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs font-bold">
+                  <i class="fas fa-robot mr-1"></i> IntraTech
+                </div>
+                <div class="absolute bottom-3 left-3 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs">
+                  <i class="fas fa-map-marker-alt mr-1"></i> São José dos Campos
+                </div>
+              </div>
+              <p class="text-sm text-gray-600 mt-3 font-medium">Centro de Engenharia e Automação</p>
+              <p class="text-xs text-gray-400">Unidade fabril 4.0 · Brasil</p>
+            </div>
           </div>
         </div>
       </div>
@@ -315,7 +373,6 @@
             <i class="fas fa-paper-plane"></i> Enviar & solicitar orçamento
           </button>
         </div>
-        <!-- feedback visual (apenas para demonstração) -->
         <p class="text-xs text-gray-400 mt-4 text-center">* campos obrigatórios · Ao enviar você concorda com nossa política de privacidade.</p>
       </form>
     </div>
@@ -338,21 +395,19 @@
     </div>
   </footer>
 
-  <!-- interação básica: alerta no submit (demonstração) -->
+  <!-- interação básica: alerta no submit -->
   <script>
     (function() {
       const form = document.querySelector('form');
       if (form) {
         form.addEventListener('submit', function(e) {
           e.preventDefault();
-          // validação simples
           const nome = form.querySelector('input[placeholder="Seu nome"]');
           const email = form.querySelector('input[type="email"]');
           if (nome.value.trim() === '' || email.value.trim() === '') {
             alert('Por favor, preencha nome e e-mail (campos obrigatórios).');
             return;
           }
-          // simulando envio
           alert('✅ Obrigado! Nossa equipe de engenharia entrará em contato em breve.\n(Esta é uma demonstração de envio)');
           form.reset();
         });
