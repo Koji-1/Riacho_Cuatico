@@ -58,7 +58,15 @@
     .reveal.visible { opacity:1; transform:translateY(0); }
     .float-icon { animation: floatIcon 3s ease-in-out infinite; }
     @keyframes floatIcon { 0%,100% { transform:translateY(0px); } 50% { transform:translateY(-8px); } }
-    /* === ROBÔ 3D E ARMAZÉM === */
+    .solution-expanded {
+      background: linear-gradient(145deg, #0b2a3b, #1a3d4f);
+      border-left: 4px solid #2b9c8c;
+      transition: all 0.3s ease;
+    }
+    .solution-expanded:hover {
+      transform: translateX(6px);
+      border-left-color: #d97a3e;
+    }
     .warehouse-scene {
       position: relative;
       width: 100%;
@@ -71,7 +79,6 @@
       box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
       border: 1px solid rgba(43,156,140,0.3);
     }
-    /* prateleiras */
     .shelf {
       position: absolute;
       background: rgba(43,156,140,0.15);
@@ -84,7 +91,6 @@
     .shelf-4 { width: 40px; height: 70px; bottom: 20px; left: 180px; }
     .shelf-5 { width: 40px; height: 90px; bottom: 20px; left: 235px; }
     .shelf-6 { width: 40px; height: 55px; bottom: 20px; left: 290px; }
-    /* caixas nas prateleiras */
     .box {
       position: absolute;
       background: #d97a3e;
@@ -102,7 +108,6 @@
     .box-8 { width: 12px; height: 12px; bottom: 70px; left: 240px; animation-delay: 0.9s; }
     .box-9 { width: 12px; height: 12px; bottom: 50px; left: 295px; animation-delay: 0.4s; }
     @keyframes boxPulse { 0%,100% { opacity:0.5; transform:scale(1); } 50% { opacity:0.9; transform:scale(1.1); } }
-    /* Robô AGV */
     .robot-agv {
       position: absolute;
       width: 30px;
@@ -158,7 +163,6 @@
       87% { left: 110px; bottom: 15px; transform: rotate(180deg); }
       100% { left: 10px; bottom: 15px; transform: rotate(0deg); }
     }
-    /* rastros de luz */
     .trail {
       position: absolute;
       width: 4px;
@@ -178,15 +182,55 @@
       40% { opacity:0.5; transform:scale(0.8); }
       100% { opacity:0; transform:scale(0); }
     }
-    /* labels das soluções expandidas */
-    .solution-expanded {
-      background: linear-gradient(145deg, #0b2a3b, #1a3d4f);
-      border-left: 4px solid #2b9c8c;
+    .client-card {
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .client-card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(43,156,140,0.08) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .client-card:hover::before { opacity: 1; }
+    .client-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2); }
+    .pulse-dot {
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.8); opacity: 0.5; }
+    }
+    .counter-number {
+      font-variant-numeric: tabular-nums;
       transition: all 0.3s ease;
     }
-    .solution-expanded:hover {
-      transform: translateX(6px);
-      border-left-color: #d97a3e;
+    .hover-glow {
+      transition: all 0.3s ease;
+    }
+    .hover-glow:hover {
+      filter: drop-shadow(0 0 20px rgba(43,156,140,0.3));
+    }
+    .floating-particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(43,156,140,0.2);
+      border-radius: 50%;
+      animation: particleFloat 8s linear infinite;
+    }
+    @keyframes particleFloat {
+      0% { transform: translateY(0) translateX(0) scale(0); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateY(-100px) translateX(20px) scale(1); opacity: 0; }
     }
     @media (max-width:640px) {
       .warehouse-scene { height: 200px; max-width: 100%; }
@@ -226,6 +270,21 @@
         <p class="text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
           Soluções mecatrônicas e AGVs que eliminam gargalos, aumentam a segurança e aceleram sua operação logística.
         </p>
+        <!-- mini contador animado -->
+        <div class="flex gap-8 text-sm">
+          <div class="flex items-center gap-2">
+            <span class="text-industrial-teal text-xl font-bold counter-number" data-target="150">0</span>
+            <span class="text-gray-300">+ projetos</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-industrial-teal text-xl font-bold counter-number" data-target="45">0</span>
+            <span class="text-gray-300">+ clientes</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-industrial-teal text-xl font-bold counter-number" data-target="12">0</span>
+            <span class="text-gray-300">países</span>
+          </div>
+        </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
           <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2" style="--i:0;">
             <i class="fas fa-bolt text-industrial-teal text-xl"></i>
@@ -238,14 +297,6 @@
           <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2" style="--i:2;">
             <i class="fas fa-shield-alt text-industrial-orange text-xl"></i>
             <span class="text-sm font-semibold text-white">Segurança 4.0</span>
-          </div>
-          <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2 col-span-2 sm:col-span-1" style="--i:3;">
-            <i class="fas fa-robot text-industrial-teal text-xl"></i>
-            <span class="text-sm font-semibold text-white">AGVs autônomos</span>
-          </div>
-          <div class="benefit-card bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 flex items-center gap-2 col-span-2 sm:col-span-1" style="--i:4;">
-            <i class="fas fa-chart-line text-industrial-orange text-xl"></i>
-            <span class="text-sm font-semibold text-white">+30% eficiência</span>
           </div>
         </div>
         <p class="text-xs text-gray-300 flex items-center gap-1"><i class="fas fa-plus-circle text-industrial-teal"></i> E muito mais: CLP, visão computacional, projetos CAD 3D...</p>
@@ -260,14 +311,12 @@
       </div>
       <div class="lg:col-span-2 hidden lg:flex justify-center animate__animated animate__fadeInRight">
         <div class="warehouse-scene">
-          <!-- prateleiras -->
           <div class="shelf shelf-1"></div>
           <div class="shelf shelf-2"></div>
           <div class="shelf shelf-3"></div>
           <div class="shelf shelf-4"></div>
           <div class="shelf shelf-5"></div>
           <div class="shelf shelf-6"></div>
-          <!-- caixas -->
           <div class="box box-1"></div>
           <div class="box box-2"></div>
           <div class="box box-3"></div>
@@ -277,17 +326,12 @@
           <div class="box box-7"></div>
           <div class="box box-8"></div>
           <div class="box box-9"></div>
-          <!-- rastros -->
           <div class="trail trail-1"></div>
           <div class="trail trail-2"></div>
           <div class="trail trail-3"></div>
           <div class="trail trail-4"></div>
           <div class="trail trail-5"></div>
-          <!-- robô -->
-          <div class="robot-agv">
-            <div class="robot-glow"></div>
-          </div>
-          <!-- legenda -->
+          <div class="robot-agv"><div class="robot-glow"></div></div>
           <div class="absolute bottom-1 right-2 text-[8px] text-white/40">AGV em movimento</div>
         </div>
       </div>
@@ -315,6 +359,7 @@
         <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
           <i class="fas fa-map-pin text-industrial-orange"></i> 
           <span>Matriz: São José dos Campos - SP, Brasil</span>
+          <span class="inline-flex items-center gap-1 ml-2 text-xs bg-green-500/10 text-green-400 px-2 py-1 rounded-full"><span class="w-1.5 h-1.5 bg-green-400 rounded-full pulse-dot"></span> Ativo</span>
         </div>
       </div>
       <div class="md:col-span-2 flex justify-center reveal" style="transition-delay:0.2s;">
@@ -339,7 +384,7 @@
   </div>
 </section>
 
-<!-- ========== SOLUÇÕES EXPANDIDAS (COM ROBÔ) ========== -->
+<!-- ========== SOLUÇÕES EXPANDIDAS ========== -->
 <section id="solucoes" class="py-16 md:py-20 bg-[#f2f6f9]">
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center max-w-3xl mx-auto mb-14 reveal">
@@ -348,17 +393,15 @@
       <p class="text-gray-500 text-lg mt-3">Da engenharia ao chão de fábrica — quatro frentes técnicas que impulsionam sua operação.</p>
     </div>
 
-    <!-- cards com descrições expandidas -->
     <div class="grid md:grid-cols-2 gap-8 mb-16">
-      <!-- CAD 3D -->
-      <div class="solution-expanded bg-white p-6 rounded-2xl shadow-card reveal" style="transition-delay:0.1s;">
+      <div class="solution-expanded bg-white p-6 rounded-2xl shadow-card reveal hover-glow" style="transition-delay:0.1s;">
         <div class="flex items-start gap-4">
           <div class="bg-[#0b2a3b]/10 w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 float-icon">
             <i class="fas fa-cube text-3xl text-[#0b4b5c]"></i>
           </div>
           <div>
             <h3 class="text-xl font-bold text-[#0b2a3b]">Projetos em CAD 3D</h3>
-            <p class="text-gray-600 text-sm mt-1 leading-relaxed">Simulação, modelagem e engenharia mecânica para sistemas ASRS e AGVs. Visualização imersiva.</p>
+            <p class="text-gray-600 text-sm mt-1 leading-relaxed">Simulação, modelagem e engenharia mecânica para sistemas ASRS e AGVs.</p>
             <ul class="mt-3 space-y-1 text-sm text-gray-500">
               <li><i class="fas fa-check-circle text-industrial-teal mr-2"></i> Modelagem paramétrica</li>
               <li><i class="fas fa-check-circle text-industrial-teal mr-2"></i> Análise de esforços (FEA)</li>
@@ -367,15 +410,14 @@
           </div>
         </div>
       </div>
-      <!-- Eletrônica -->
-      <div class="solution-expanded bg-white p-6 rounded-2xl shadow-card reveal" style="transition-delay:0.2s;">
+      <div class="solution-expanded bg-white p-6 rounded-2xl shadow-card reveal hover-glow" style="transition-delay:0.2s;">
         <div class="flex items-start gap-4">
           <div class="bg-[#0b2a3b]/10 w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 float-icon">
             <i class="fas fa-microchip text-3xl text-[#0b4b5c]"></i>
           </div>
           <div>
             <h3 class="text-xl font-bold text-[#0b2a3b]">Eletrônica Dedicada</h3>
-            <p class="text-gray-600 text-sm mt-1 leading-relaxed">Sistemas embarcados, placas customizadas e firmware para controle de equipamentos industriais.</p>
+            <p class="text-gray-600 text-sm mt-1 leading-relaxed">Sistemas embarcados, placas customizadas e firmware para controle industrial.</p>
             <ul class="mt-3 space-y-1 text-sm text-gray-500">
               <li><i class="fas fa-check-circle text-industrial-teal mr-2"></i> Design de PCBs</li>
               <li><i class="fas fa-check-circle text-industrial-teal mr-2"></i> Firmware em C/C++</li>
@@ -384,15 +426,14 @@
           </div>
         </div>
       </div>
-      <!-- CLP -->
-      <div class="solution-expanded bg-white p-6 rounded-2xl shadow-card reveal" style="transition-delay:0.3s;">
+      <div class="solution-expanded bg-white p-6 rounded-2xl shadow-card reveal hover-glow" style="transition-delay:0.3s;">
         <div class="flex items-start gap-4">
           <div class="bg-[#0b2a3b]/10 w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 float-icon">
             <i class="fas fa-laptop-code text-3xl text-[#0b4b5c]"></i>
           </div>
           <div>
             <h3 class="text-xl font-bold text-[#0b2a3b]">Programação de CLP</h3>
-            <p class="text-gray-600 text-sm mt-1 leading-relaxed">Automação de máquinas, linhas de montagem e controle de processos com lógica ladder e ST.</p>
+            <p class="text-gray-600 text-sm mt-1 leading-relaxed">Automação de máquinas, linhas de montagem e controle de processos.</p>
             <ul class="mt-3 space-y-1 text-sm text-gray-500">
               <li><i class="fas fa-check-circle text-industrial-teal mr-2"></i> Ladder, ST, SFC</li>
               <li><i class="fas fa-check-circle text-industrial-teal mr-2"></i> Integração com SCADA</li>
@@ -401,15 +442,14 @@
           </div>
         </div>
       </div>
-      <!-- Visão Computacional -->
-      <div class="solution-expanded bg-white p-6 rounded-2xl shadow-card reveal" style="transition-delay:0.4s;">
+      <div class="solution-expanded bg-white p-6 rounded-2xl shadow-card reveal hover-glow" style="transition-delay:0.4s;">
         <div class="flex items-start gap-4">
           <div class="bg-[#0b2a3b]/10 w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 float-icon">
             <i class="fas fa-eye text-3xl text-[#0b4b5c]"></i>
           </div>
           <div>
             <h3 class="text-xl font-bold text-[#0b2a3b]">Visão Computacional</h3>
-            <p class="text-gray-600 text-sm mt-1 leading-relaxed">Orientação de AGVs, inspeção de qualidade e rastreio de cargas com inteligência visual.</p>
+            <p class="text-gray-600 text-sm mt-1 leading-relaxed">Orientação de AGVs, inspeção de qualidade e rastreio de cargas.</p>
             <ul class="mt-3 space-y-1 text-sm text-gray-500">
               <li><i class="fas fa-check-circle text-industrial-teal mr-2"></i> Detecção de objetos (YOLO)</li>
               <li><i class="fas fa-check-circle text-industrial-teal mr-2"></i> Navegação autônoma</li>
@@ -420,7 +460,7 @@
       </div>
     </div>
 
-    <!-- Destaque: Robô automatizado para transporte e organização -->
+    <!-- Destaque Robô -->
     <div class="bg-gradient-to-r from-[#0b2a3b] to-[#1a3d4f] rounded-3xl p-8 md:p-12 shadow-2xl reveal">
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div>
@@ -466,17 +506,129 @@
             <div class="trail trail-3"></div>
             <div class="trail trail-4"></div>
             <div class="trail trail-5"></div>
-            <div class="robot-agv" style="animation-duration:8s;">
-              <div class="robot-glow"></div>
-            </div>
+            <div class="robot-agv" style="animation-duration:8s;"><div class="robot-glow"></div></div>
             <div class="absolute bottom-1 right-2 text-[8px] text-white/40">AGV em operação</div>
-            <!-- indicador de carga -->
             <div class="absolute top-2 right-2 bg-industrial-orange/30 px-2 py-1 rounded-full text-[8px] text-white/80 border border-industrial-orange/40">
               <i class="fas fa-box mr-1"></i> 250kg
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CLIENTES E CASES (NOVO) ========== -->
+<section class="py-16 md:py-20 bg-white border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+      <span class="text-industrial-teal font-semibold text-sm tracking-widest"><i class="fas fa-building mr-2"></i> CLIENTES E CASES</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-[#0b2a3b] mt-2">Empresas que já adotaram o método</h2>
+      <p class="text-gray-500 text-lg mt-3">Grandes nomes da indústria confiam na IntraTech para automatizar suas operações logísticas.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Cliente 1 -->
+      <div class="client-card bg-[#f2f6f9] rounded-2xl p-6 shadow-card border border-gray-200/50 reveal" style="transition-delay:0.1s;">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-[#0b2a3b] to-[#1a3d4f] rounded-xl flex items-center justify-center text-white text-2xl font-bold">LG</div>
+          <div>
+            <h4 class="font-bold text-[#0b2a3b] text-lg">Logística Global</h4>
+            <span class="text-xs text-industrial-teal font-medium"><i class="fas fa-check-circle mr-1"></i> Case de sucesso</span>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed">Redução de 35% no tempo de separação de pedidos com implementação de AGVs e visão computacional.</p>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500">
+          <span><i class="fas fa-robot text-industrial-teal mr-1"></i> 12 AGVs</span>
+          <span><i class="fas fa-chart-line text-industrial-teal mr-1"></i> +42% eficiência</span>
+        </div>
+      </div>
+
+      <!-- Cliente 2 -->
+      <div class="client-card bg-[#f2f6f9] rounded-2xl p-6 shadow-card border border-gray-200/50 reveal" style="transition-delay:0.2s;">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-[#d97a3e] to-[#f0b27a] rounded-xl flex items-center justify-center text-white text-2xl font-bold">AM</div>
+          <div>
+            <h4 class="font-bold text-[#0b2a3b] text-lg">AutoMec Brasil</h4>
+            <span class="text-xs text-industrial-teal font-medium"><i class="fas fa-check-circle mr-1"></i> Case de sucesso</span>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed">Automação completa de linha de montagem com CLP integrado e sistema de rastreamento por visão computacional.</p>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500">
+          <span><i class="fas fa-microchip text-industrial-teal mr-1"></i> 8 CLPs</span>
+          <span><i class="fas fa-eye text-industrial-teal mr-1"></i> 14 câmeras</span>
+        </div>
+      </div>
+
+      <!-- Cliente 3 -->
+      <div class="client-card bg-[#f2f6f9] rounded-2xl p-6 shadow-card border border-gray-200/50 reveal" style="transition-delay:0.3s;">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-[#2b9c8c] to-[#4dc9b8] rounded-xl flex items-center justify-center text-white text-2xl font-bold">FD</div>
+          <div>
+            <h4 class="font-bold text-[#0b2a3b] text-lg">Fast Delivery</h4>
+            <span class="text-xs text-industrial-teal font-medium"><i class="fas fa-check-circle mr-1"></i> Case de sucesso</span>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed">Otimização de centro de distribuição com sistema ASRS e robôs móveis autônomos para transporte interno.</p>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500">
+          <span><i class="fas fa-warehouse text-industrial-teal mr-1"></i> 3.000 m²</span>
+          <span><i class="fas fa-rocket text-industrial-teal mr-1"></i> +55% throughput</span>
+        </div>
+      </div>
+
+      <!-- Cliente 4 -->
+      <div class="client-card bg-[#f2f6f9] rounded-2xl p-6 shadow-card border border-gray-200/50 reveal" style="transition-delay:0.4s;">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-[#0b2a3b] to-[#2b5c6e] rounded-xl flex items-center justify-center text-white text-2xl font-bold">EP</div>
+          <div>
+            <h4 class="font-bold text-[#0b2a3b] text-lg">EletroParts</h4>
+            <span class="text-xs text-industrial-teal font-medium"><i class="fas fa-check-circle mr-1"></i> Case de sucesso</span>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed">Implementação de sistema de visão computacional para inspeção de qualidade e rastreamento de componentes.</p>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500">
+          <span><i class="fas fa-check-double text-industrial-teal mr-1"></i> 99.7% acurácia</span>
+          <span><i class="fas fa-clock text-industrial-teal mr-1"></i> 24/7 operação</span>
+        </div>
+      </div>
+
+      <!-- Cliente 5 -->
+      <div class="client-card bg-[#f2f6f9] rounded-2xl p-6 shadow-card border border-gray-200/50 reveal" style="transition-delay:0.5s;">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-[#d97a3e] to-[#e8a87c] rounded-xl flex items-center justify-center text-white text-2xl font-bold">AB</div>
+          <div>
+            <h4 class="font-bold text-[#0b2a3b] text-lg">AgroBrasil</h4>
+            <span class="text-xs text-industrial-teal font-medium"><i class="fas fa-check-circle mr-1"></i> Case de sucesso</span>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed">Automação de armazém de grãos com sistema de movimentação inteligente e controle de estoque em tempo real.</p>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500">
+          <span><i class="fas fa-tractor text-industrial-teal mr-1"></i> 6 AGVs</span>
+          <span><i class="fas fa-database text-industrial-teal mr-1"></i> +40% capacidade</span>
+        </div>
+      </div>
+
+      <!-- Cliente 6 -->
+      <div class="client-card bg-[#f2f6f9] rounded-2xl p-6 shadow-card border border-gray-200/50 reveal" style="transition-delay:0.6s;">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-[#2b9c8c] to-[#7ad9c8] rounded-xl flex items-center justify-center text-white text-2xl font-bold">FM</div>
+          <div>
+            <h4 class="font-bold text-[#0b2a3b] text-lg">FarmaMed</h4>
+            <span class="text-xs text-industrial-teal font-medium"><i class="fas fa-check-circle mr-1"></i> Case de sucesso</span>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed">Solução completa para armazenamento de medicamentos com rastreabilidade total e controle de temperatura.</p>
+        <div class="mt-4 flex items-center gap-4 text-xs text-gray-500">
+          <span><i class="fas fa-thermometer-half text-industrial-teal mr-1"></i> 2°C a 8°C</span>
+          <span><i class="fas fa-barcode text-industrial-teal mr-1"></i> 100% rastreável</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-12 reveal">
+      <a href="#contato" class="inline-block bg-[#0b2a3b] hover:bg-[#1a3d4f] text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+        <i class="fas fa-plus-circle mr-2"></i> Ver todos os cases
+      </a>
     </div>
   </div>
 </section>
@@ -605,6 +757,43 @@
     }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
     reveals.forEach(el => observer.observe(el));
 
+    // Contadores animados
+    const counters = document.querySelectorAll('.counter-number');
+    let countersAnimated = false;
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !countersAnimated) {
+          countersAnimated = true;
+          counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+              current += increment;
+              if (current >= target) {
+                counter.textContent = target + '+';
+                clearInterval(timer);
+              } else {
+                counter.textContent = Math.floor(current) + '+';
+              }
+            }, 50);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(el => counterObserver.observe(el));
+
+    // Efeito de mouse nos cards de clientes
+    document.querySelectorAll('.client-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--x', x + '%');
+        card.style.setProperty('--y', y + '%');
+      });
+    });
+
     // Formulário
     const form = document.querySelector('form');
     if (form) {
@@ -623,12 +812,28 @@
 
     // Touch support
     if ('ontouchstart' in window) {
-      document.querySelectorAll('.solution-expanded, .benefit-card, .btn-cta').forEach(el => {
+      document.querySelectorAll('.solution-expanded, .benefit-card, .btn-cta, .client-card').forEach(el => {
         el.addEventListener('touchstart', function() {
           this.style.transform = 'scale(0.98)';
           setTimeout(() => { this.style.transform = ''; }, 200);
         });
       });
+    }
+
+    // Partículas flutuantes no hero (detalhe visual)
+    const hero = document.querySelector('.hero-illustrated');
+    if (hero) {
+      for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = (Math.random() * 8) + 's';
+        particle.style.animationDuration = (6 + Math.random() * 6) + 's';
+        particle.style.width = (2 + Math.random() * 4) + 'px';
+        particle.style.height = particle.style.width;
+        hero.appendChild(particle);
+      }
     }
   })();
 </script>
